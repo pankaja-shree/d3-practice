@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- theme info -->
+  <meta name="description" content="This is web page used to demo functionality of the D3.js library. It is released under CC-4.0 license.">
+  <meta name="keywords" content="data visualization, d3, javascript">
+  <meta name="author" content="Pankajashree">
+  <!-- site title -->
+  <title>Bargraph plot | Data Visualization and D3.js</title>
+  <!-- Bootstrap -->
+    <link href="./lib/bootstrap.min.css" rel="stylesheet">
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+  <!-- Custom styles -->
+  <style>
+  body {
+    background: #fff;
+    color: #757575;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 12px;
+}
+
+img {
+    max-width: 100%
+}
+
+h1 {
+    font-size: 24px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #000;
+    margin-bottom: 24px;
+}
+
+h3 {
+    font-size: 1.4em;
+    color: #000;
+    margin-top: 0;
+}
+
+p, a {
+    line-height: 1.7em;
+    font-weight: lighter;
+    letter-spacing: 1px;
+    font-size: 16px;
+}
+
+.main {
+    margin-bottom: 24px;
+}
+
+.main-title {
+    text-align: center;
+}
+
+
+
+.chart rect {
+  fill: darkgreen;
+}
+
+.chart text {
+  fill: white;
+  font: 10px sans-serif;
+  text-anchor: end;
+}
+
+.footer {
+    background-color: #f4f4ef;
+    padding: 24px 15px 36px;
+}
+
+.footer-header {
+    font-weight: normal;
+    color: #757575;
+}
+</style>
+<script>
+    function draw(data) {
+        var width = 420, barHeight = 20;
+
+        //x-axis scale
+        var x = d3.scale.linear().range([0, width]);
+
+        //set domain of data
+        x.domain([0, d3.max(data, d => { return d.value })]);
+
+        //set width of svg
+        var chart = d3.select('.chart').attr('width', width);
+
+        //binding data with g tags
+        //in the svg element, select all g tags, append each data point to the g tag and change the tranform attribute of each g tag
+        var bar = chart.selectAll('g')
+            .data(data)
+            .enter().append('g')
+            .attr('transform', (d, i) => {return "translate(0," + i * barHeight + ")"; });
+
+        //add rectangle to each data point
+        bar.append('rect')
+           .attr('width', d => {return x(d.value);} )
+           .attr('height', barHeight - 1);
+
+        //add labels to rects
+        bar.append('text')
+            .attr('x', d => { return x(d.value) - 3; })
+            .attr('y', barHeight / 2)
+            .attr('dy', '.35em')
+            .text(d => {return d.value; });
+    };
+</script>
+</head>
+
+<body>
+  <div class="container">
+    <h1 class="main-title">Data Visualization and D3.js</h1>
+    <h3 class="main-title">Bar graph</h3>
+    <div class="main">
+        <svg class="chart"></svg>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div id="footer">
+      <p class="footer-header">By Pankajashree R
+      <span>&copy; <script>document.write(new Date().getFullYear())</script></span>
+      <span><a href="https://github.com/pankaja-shree">Github Repo</a></span>
+    </p>
+    </div>
+  </div>
+  <!-- Load D3.js -->
+  <script src="d3.v3.js.min"></script>
+  <script type="text/javascript">
+    var data = [
+  {name: "Locke",    value:  4},
+  {name: "Reyes",    value:  8},
+  {name: "Ford",     value: 15},
+  {name: "Jarrah",   value: 16},
+  {name: "Shephard", value: 23},
+  {name: "Kwon",     value: 42}
+];
+draw(data);
+  </script>
+</body>
+</html>
+
