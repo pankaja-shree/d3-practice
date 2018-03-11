@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- theme info -->
+  <meta name="description" content="This is web page used to demo functionality of the D3.js library. It is released under CC-4.0 license.">
+  <meta name="keywords" content="data visualization, d3, javascript">
+  <meta name="author" content="Pankajashree">
+  <!-- site title -->
+  <title>Gapminder plot | Data Visualization and D3.js</title>
+  <!-- Bootstrap -->
+    <link href="./lib/bootstrap.min.css" rel="stylesheet">
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+  <!-- Custom styles -->
+  <link rel="stylesheet" href="./d3_demo.css">
+  <style>
+  body {
+    background: #fff;
+    color: #757575;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 12px;
+}
+
+img {
+    max-width: 100%
+}
+
+h1 {
+    font-size: 24px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #000;
+    margin-bottom: 24px;
+}
+
+h3 {
+    font-size: 1.4em;
+    text-transform: uppercase;
+    color: #000;
+    margin-top: 0;
+}
+
+p, a {
+    line-height: 1.7em;
+    font-weight: lighter;
+    letter-spacing: 1px;
+    font-size: 16px;
+}
+
+.main {
+    margin-bottom: 24px;
+}
+
+.main-title {
+    text-align: center;
+}
+
+.footer {
+    background-color: #f4f4ef;
+    padding: 24px 15px 36px;
+}
+
+.footer-header {
+    font-weight: normal;
+    color: #757575;
+}
+</style>
+</head>
+
+<body>
+  <div class="container">
+    <h1 class="main-title">Data Visualization and D3.js</h1>
+    <div class="main">
+      <div class="row">
+          <div class="col-sm-offset-1 col-sm-10 col-md-8 col-md-offset-2">
+              <h3 class="mobmid">Skills</h3>
+
+              <p>Data Encodings</p>
+              <div class="progress">
+                  <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100" style="width: 85%">
+                      <span class="sr-only">85% Complete (success)</span>
+                  </div>
+              </div><!--skill end-->
+
+
+              <p>Visual Design Principles</p>
+              <div class="progress">
+                  <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100" style="width: 55%">
+                      <span class="sr-only">55% Complete</span>
+                  </div>
+              </div><!--skill end-->
+
+              <p>D3.js</p>
+              <div class="progress">
+                  <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+                      <span class="sr-only">40% Complete (warning)</span>
+                  </div>
+              </div><!--skill end-->
+
+              <p>Storytelling</p>
+              <div class="progress">
+                  <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="23" aria-valuemin="0" aria-valuemax="100" style="width: 23%">
+                      <span class="sr-only">23% Complete (danger)</span>
+                  </div>
+              </div><!--skill end-->
+          </div><!--info end-->
+      </div><!--data vis skills end-->
+    </div>
+  </div>
+
+  <div class="footer">
+    <div id="footer">
+      <p class="footer-header">By Pankajashree R</p>
+      <span><a href="https://github.com/pankaja-shree">Github Repo</a></span>
+      <span>&copy; <script>document.write(new Date().getFullYear())</script></span>
+    </div>
+  </div>
+  <!-- Load D3.js -->
+  <script src="./lib/d3.v3.js.min"></script>
+</body>
+</html>
+
