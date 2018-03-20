@@ -11,8 +11,6 @@
   <meta name="author" content="Pankajashree">
   <!-- site title -->
   <title>Bargraph plot | Data Visualization and D3.js</title>
-  <!-- Bootstrap -->
-    <link href="./lib/bootstrap.min.css" rel="stylesheet">
   <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -61,8 +59,6 @@ p, a {
     text-align: center;
 }
 
-
-
 .chart rect {
   fill: darkgreen;
 }
@@ -75,7 +71,9 @@ p, a {
 
 .footer {
     background-color: #f4f4ef;
-    padding: 24px 15px 36px;
+    position: relative;
+    bottom: 0;
+    width: 95%;
 }
 
 .footer-header {
@@ -83,48 +81,19 @@ p, a {
     color: #757575;
 }
 </style>
-<script>
-    function draw(data) {
-        var width = 420, barHeight = 20;
-
-        //x-axis scale
-        var x = d3.scale.linear().range([0, width]);
-
-        //set domain of data
-        x.domain([0, d3.max(data, d => { return d.value })]);
-
-        //set width of svg
-        var chart = d3.select('.chart').attr('width', width);
-
-        //binding data with g tags
-        //in the svg element, select all g tags, append each data point to the g tag and change the tranform attribute of each g tag
-        var bar = chart.selectAll('g')
-            .data(data)
-            .enter().append('g')
-            .attr('transform', (d, i) => {return "translate(0," + i * barHeight + ")"; });
-
-        //add rectangle to each data point
-        bar.append('rect')
-           .attr('width', d => {return x(d.value);} )
-           .attr('height', barHeight - 1);
-
-        //add labels to rects
-        bar.append('text')
-            .attr('x', d => { return x(d.value) - 3; })
-            .attr('y', barHeight / 2)
-            .attr('dy', '.35em')
-            .text(d => {return d.value; });
-    };
-</script>
 </head>
 
 <body>
   <div class="container">
     <h1 class="main-title">Data Visualization and D3.js</h1>
-    <h3 class="main-title">Bar graph</h3>
     <div class="main">
-        <svg class="chart"></svg>
+        <div class="bar"></div>
+        <div class="dynbar">
+            <h3 class="main-title">Animated Bar graph</h3>
+            <svg class="dyn_bar"></svg>
+        </div>
     </div>
+
   </div>
 
   <div class="footer">
@@ -138,15 +107,134 @@ p, a {
   <!-- Load D3.js -->
   <script src="d3.v3.js.min"></script>
   <script type="text/javascript">
-    var data = [
-  {name: "Locke",    value:  4},
-  {name: "Reyes",    value:  8},
-  {name: "Ford",     value: 15},
-  {name: "Jarrah",   value: 16},
-  {name: "Shephard", value: 23},
-  {name: "Kwon",     value: 42}
-];
-draw(data);
+//code for simple bar chart
+
+
+//code for animated bar chart
+var bardata = [];
+
+for (let i=0; i<50; i++){
+     bardata.push(Math.round(Math.random()*30))
+}
+
+bardata.sort((a,b) => {
+     return a-b;
+})
+
+var margin = { top: 30, right: 30, bottom: 40, left: 50}
+
+var height = 400 - margin.top - margin.bottom,
+    width = 600 - margin.right - margin.left,
+    barWidth = 50,
+    barOffset = 5;
+
+var tempColor;
+
+var tooltip = d3.select('.dynbar').append('div')
+                          .style('position', 'absolute')
+                          .style('padding', '0 10px')
+                          .style('background', 'white')
+                          .style('opacity', 0)
+
+             var yScale = d3.scale.linear()
+                         .domain([0, d3.max(bardata)])
+                         .range([0, height])
+
+             var xScale = d3.scale.ordinal()
+                         .domain(d3.range(0,bardata.length))
+                         .rangeBands([0,width], .3)
+
+             var color = d3.scale.linear()
+                         .domain([0, bardata.length*.63, bardata.length])
+                         .range(['#ffb832','#c61c6f','#d33682'])
+
+
+             var myChart = d3.select('.dyn_bar')
+                         .style('background', '#e7e0cb')
+                         .attr('width', width + margin.left + margin.right)
+                         .attr('height', height + margin.top + margin.bottom)
+                         .append('g')
+                         .attr('transform','translate(' + margin.left+','+ margin.top + ')')
+                         .selectAll('rect')
+                         .data(bardata)
+                         .enter()
+                         .append('rect')
+
+                          .style('fill', function(d,i){
+                                 return color(i);
+                             })
+                         .attr('width', xScale.rangeBand())
+                         .attr('x', function(d,i){
+                                return xScale(i);
+                             })
+                         .attr('height', 0)
+                         .attr('y', height)
+
+                         .on('mouseover', function(d){
+
+                             tooltip.transition()
+                               .style('opacity', 0.9)
+                             tooltip.html(d)
+                                     .style('left', (d3.event.pageX - 35)+'px')
+                                     .style('top', (d3.event.pageY - 40)+'px')
+
+
+                         tempColor = this.style.fill;
+                         d3.select(this)
+                           .style('opacity', .5)
+                           .style('fill', 'yellow')
+                         })
+                        .on('mouseout', function(d){
+                          d3.select(this)
+                               .style('opacity', 1)
+                               .style('fill', tempColor)
+                         })
+
+                         myChart.transition()
+                                .attr('height', function(d){
+                                       return yScale(d);
+                         })
+                                .attr('y', function(d){
+                                       return height - yScale(d);
+                         })
+                        .delay(function(d,i){
+                                return i*20;
+                         })
+                        .duration(5000)
+                        .ease('elastic')
+
+            var vGuideScale = d3.scale.linear()
+                              .domain([0, d3.max(bardata)])
+                              .range([height, 0])
+
+            var vAxis = d3.svg.axis()
+                        .scale(vGuideScale)
+                        .orient('left')
+                        .ticks(10)
+
+            var vGuide = d3.select('svg').append('g')
+                vAxis(vGuide)
+
+                vGuide.attr('transform','translate('+margin.left+',' + margin.top + ')')
+                vGuide.selectAll('path')
+                      .style({fill: 'none', stroke: '#000'})
+                vGuide.selectAll('line')
+                      .style({stroke: '#000'})
+
+            var hAxis = d3.svg.axis()
+                      .scale(xScale)
+                      .orient('bottom')
+                      .tickValues(xScale.domain().filter(function(d,i){
+                           return !(i % (bardata.length/5));
+                       }))
+
+            var hGuide = d3.select('svg').append('g')
+                        hAxis(hGuide)
+                hGuide.attr('transform', 'translate('+margin.left+',' + (height + margin.top)                            + ')')
+                hGuide.selectAll('path')
+                      .style({fill: 'none', stroke: '#000'})
+                hGuide.selectAll('line')
+                      .style({stroke: '#000'})
   </script>
 </body>
 </html>
